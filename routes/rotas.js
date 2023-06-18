@@ -4,24 +4,39 @@ const {getMarcas, addMarca, updateMarca, deleteMarca, getMarcaPorCodigo } = requ
 
 const { getModelo, addModelo, updateModelo, deleteModelo, getModeloPorCodigo} = require('../controllers/modelosController')
 
-const rotas = new Router();
+const { getCarros, addCarro, updateCarro, deleteCarro, getCarroPorCodigo} = require('../controllers/carrosController')
 
+const { login, verificaJWT } = require('../controllers/segurancaController')
+
+const rotas = new Router();
+//Marcas
 rotas.route('/marcas')
-     .get(getMarcas)
-     .post(addMarca)
-     .put(updateMarca);
+     .get(verificaJWT,getMarcas)
+     .post(verificaJWT,addMarca)
+     .put(verificaJWT,updateMarca);
 
 rotas.route('/marcas/:codigo')
-     .get(getMarcaPorCodigo)
-     .delete(deleteMarca);
-
+     .get(verificaJWT, getMarcaPorCodigo)
+     .delete(verificaJWT, deleteMarca);
+//Modelos
 rotas.route('/modelos')
-     .get(getModelo)
-     .post(addModelo)
-     .put(updateModelo);
+     .get(verificaJWT, getModelo)
+     .post(verificaJWT, addModelo)
+     .put(verificaJWT, updateModelo);
 
 rotas.route('/modelos/:codigo')
-     .get(getModeloPorCodigo)
-     .delete(deleteModelo);
+     .get(verificaJWT, getModeloPorCodigo)
+     .delete(verificaJWT,deleteModelo);
+//Carros
+rotas.route('/carros')
+     .get(verificaJWT, getCarros)
+     .post(verificaJWT, addCarro)
+     .put(verificaJWT, updateCarro);
 
+rotas.route('/carros/:codigo')
+     .get(verificaJWT, getCarroPorCodigo)
+     .delete(verificaJWT,deleteCarro);
+
+rotas.route("/login")
+     .post(login);
 module.exports = rotas;
